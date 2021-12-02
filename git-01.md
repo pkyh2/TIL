@@ -142,3 +142,5 @@ def my_func():
 - 내 컴퓨터에서 TIL 폴더에서 github TIL 폴더에 동기화
 - commit 내용을 github TIL 폴더에 전송
 - 원격 저장소(remote repo) 등록하기
+  - `git remote add origin <repo URL>` : 원격 저장소의 레포지토리 등록
+  - `git push -u origin master` : 원격 저장소로 전송

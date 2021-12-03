@@ -142,6 +142,7 @@ def my_func():
   - `git remote add origin <repo URL>` : 원격 저장소의 레포지토리 등록
   - `git remote -v` : 원격 저장소 확인하기
   - `git push -u origin master` : 원격 저장소로 전송
+  - 로그인 관련 문제 해결 **제어판 > 자격 증명 관리자**에서 해결
 - git log 상태 확인
   - (orging/master) 표시가 있으면 저 commit 까지 push된 상태
   - (HEAD -> master)는 저기까지 commit 되어있는 상태

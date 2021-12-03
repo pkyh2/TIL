@@ -92,11 +92,7 @@ def my_func():
 
 ### vscode gitbash 연동
 
-1. 터미널 창 `ctrl + shift + \``명령어를
-
-`안에 \`명령어를 쓰고싶은데 어떻게 하나요?`
-
-`명령어는 이스케이프 문자가 안되는거같아요.
+1. 터미널 창 실행 후 터미널 이름 옆에 ^반대 표시 선택 후 기본 프로필 선택(git bash)
 
 ### git 사용법
 
@@ -119,7 +115,7 @@ def my_func():
 
 - 변경사항이 git add 후 스테이징된 변경사항으로 이동
 - `$ git restore --staged <file>` : staging 된 파일이 modify로 이동
-- 처음 생긴 파일은 Untracked file이다.
+- 처음 생긴 파일은 Untracked file이다. -> 그래서 add를 통해 tracking 해준다.
 
 #### git 사용 주의사항
 
@@ -141,6 +137,8 @@ def my_func():
 - github - TIL 폴더 생성
 - 내 컴퓨터에서 TIL 폴더에서 github TIL 폴더에 동기화
 - commit 내용을 github TIL 폴더에 전송
+- github에 원격 저장소 생성하기
 - 원격 저장소(remote repo) 등록하기
   - `git remote add origin <repo URL>` : 원격 저장소의 레포지토리 등록
+  - `git remote -v` : 원격 저장소 확인하기
   - `git push -u origin master` : 원격 저장소로 전송

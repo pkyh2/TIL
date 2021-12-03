@@ -146,4 +146,3 @@ def my_func():
   - (orging/master) 표시가 있으면 저 commit 까지 push된 상태
   - (HEAD -> master)는 저기까지 commit 되어있는 상태
   - 둘다 같이 있으면 최신 commit과 push가 같은 상태
-  - ![image-20211203094646505](git-01.assets/image-20211203094646505.png)

@@ -126,3 +126,22 @@
 
 ## import seaborn as sns
 
+#### boxplot
+
+- 탐색적 자료 분석(EDA)에서 주로 많이 사용
+- 4분위 수를 이용한 시각화
+  - 이상치(Outlier)를 확인하는 용도로 사용
+  - 1분위수 자료의 25%에 해당
+  - 2분위수 자료의 50%에 해당
+  - 3분위수 자료의 75%에 해당
+- IQR(Inter Quantile Range)
+  - IQR = Q3 - Q1
+  - 최대 제한선 = Q3 + (IQR * 1.5)
+  - 최소 제한선 = Q1 - (IQR * 1.5)
+  - IQR을 벗어나면 outlier값이라고 판단
+
+#### 최대 표현 변수 분석
+
+- 최대 4개까지 표현을 할 수 있다.
+- `sns.barplot(data=rawData_without_outlier, x='흡연상태', y='IDL콜레스테롤', hue='성별코드')`
+

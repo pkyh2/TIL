@@ -2,6 +2,8 @@
 
 ## import pandas as pd
 
+
+
 ### 판다스란?
 
 - 파이썬에서 사용할 수 있는 데이터 전처리용 패키지
@@ -22,6 +24,10 @@
 - type은 DataFrame
 
 ### 데이터 프레임 사용하기
+
+#### 명령어 참고 사이트
+
+[명령어 참고]: https://wpaud16.tistory.com/20?category=889544	"Pandas"
 
 #### 출력
 

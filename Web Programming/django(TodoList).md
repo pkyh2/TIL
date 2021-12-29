@@ -61,3 +61,38 @@ tamplates
     - `python manage.py makemigrations` 명령어를 통해 데이터 베이스에 초기화 정보를 전달
     - `python manage.py migrate`를 통해 데이터베이스 테이블을 생성한다.
     - dbshell에 접속하여 DB query날려보기
+
+
+
+### django DB
+
+- django의 default DB에 접근하여 stdudent라는 table에 특정이름의 몸무게 값을 업데이트
+
+  ```python
+  from django.db import connections
+  
+  conn = connections['default']
+  sql_query = "UPDATE student SET weight = 80 WHERE name = %s " % (name)
+  with conn.cursor() as cur:
+      cur.execute(sql_query)
+  ```
+
+- sql query문 
+
+  - `.tables` : 해당 데이터베이스에 존재하는 테이블 확인
+  - `PRAGMA table_info('table_name');` : 해당 테이블의 정보 확인
+  - `select * from 'table_name';` : table에 전체 column을 조회 *대신 column을 입력하면 해당 column만 조회 
+
+- 수정 버튼 동작 과정
+  1. 버튼을 누르면 `writeUpdate/` 페이지로 이동
+     - 이동하는데 해당 board의 id 값을 조회하여 정보를 가져온다.
+     - get방식으로 보내주려면 URL에 `/?id={{board.id}}` 를 추가 해준다.
+  2. `urls.py`에 `writeUpdate/` path를 추가해준다.
+  3. `views.py`에서 `writeUpdate`함수를 추가
+     - post 변수에 `Board.objects.get(id = request.GET['id'])`를 대입
+       - Board 타입의 객체 하나를 반환 즉, GET방식을 통해 받아온 'id' column값을 대입
+  4. `writeUpdate/` 페이지에는 해당 `input` 값에 해당 row의 column 값이 기재 되어있음
+     - 각 input 태그에 value값으로 템플릿 태그를 사용해 해당 객체의 속성값을 전달
+  5. 변경 사항을`from tag`에  `modify/` 페이지를 POST방식으로 전달하여 작성 값들을 `{{post.id}}` value 값에 넣어 name을 통해 수정버튼을 누르면, `views.py` 파일의 modefy 함수에서 post변수에  Board 타입의 객체 하나를 반환 즉, POST방식을 통해 받아온 'id' column값을 대입
+  6. post의 각각의 속성들에 writeUpdate에서 수정한 value값들을 대입해주고 저장
+

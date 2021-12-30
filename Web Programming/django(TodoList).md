@@ -96,3 +96,23 @@ tamplates
   5. 변경 사항을`from tag`에  `modify/` 페이지를 POST방식으로 전달하여 작성 값들을 `{{post.id}}` value 값에 넣어 name을 통해 수정버튼을 누르면, `views.py` 파일의 modefy 함수에서 post변수에  Board 타입의 객체 하나를 반환 즉, POST방식을 통해 받아온 'id' column값을 대입
   6. post의 각각의 속성들에 writeUpdate에서 수정한 value값들을 대입해주고 저장
 
+
+
+### 로그인 안된상태
+
+board/list -> `개시글 작성` -> board/write로 이동
+
+개시글 작성 후 `등록` 버튼 클릭 -> 로그인이 안되어 있어서 signin.html로 이동
+
+다시 로그인하면 `createDate` value 에러 발생
+
+### 수정 삭제에 대한 권한 확인
+
+1. 수정 버튼을 눌렀을때 작성자와 현재 로그인 상태의 사람이 아니면 수정 불가
+2. 현재 로그인 user확인 작성자 id와 로그인 user가 같으면 `writeUpdate`페이지로 이동
+3. 현재 로그인 user와 작성자 id가 다르면 알람 뜨게 할까?
+
+
+
+### 댓글 기능 만들기
+

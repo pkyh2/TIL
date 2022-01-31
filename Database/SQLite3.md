@@ -157,3 +157,120 @@ INSERT INTO Person VALUES
   2. `substr()` : 함수는 문자열의 일부를 반환한다.
 
   3. 뷰 삭제 : `DROP VIEW Birthday;`
+
+
+
+### 조건절
+
+```sqlite
+SELECT
+	bdate,
+	MM,
+	CASE
+		WHEN MM = '01' THEN 'Jan.'
+	END Month
+FROM Birthday;
+```
+
+- `MM` 컬럼에서 조건에 맞는 값을 `THEN` 뒤의 값으로 변경한 값을 생성된 `Month` 컬럼에 추가해준다.
+
+
+
+### 날짜와 시간
+
+- **현재 시간** : `SELECT strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime') 현재시간;`
+
+- **나이 구하기**
+
+  1. 혜리의 만 나이 구하기
+
+     ```sqlite
+     SELECT
+     	-- Birthday에 '생일' 컬럼에서
+     	Birthday "생일",
+     	-- 현재 년도에서 - 첫째 자리부터 네글자 - (현재 월일 < 생일 월일)
+     	-- 생일이 지났으면 1을 안 빼주고, 안 지났으면 1을 빼준다.
+     	strftime('%Y', 'now') - substr(Birthday, 1, 4) - (strftime('%m-%d', 'now') < substr(Birthday, 6)) "나이"
+     FROM Person
+     WHERE Name = '혜리';
+     ```
+
+- **리터럴 값**
+
+  - `SELECT CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP;`
+
+- **연습문제**
+
+  ```sqlite
+  SELECT
+  	Name,
+  	strftime('%Y', 'now') - substr(Birthday, 1, 4) - (strftime('%m-%d', 'now') < substr(Birthday, 6)) "Age"
+  FROM Person
+  ```
+
+
+
+### 집계 함수
+
+1. `count(*)` : 선택한 table의 모든 행의 개수를 센다.
+   - `count(Height)` :  특정 컬럼의 행의 개수
+2. `max()` : 인자로 컬럼을 넣어주면 컬럼의 최댓값을 구한다.
+3. `min()` : 인자로 컬럼을 넣어주면 컬럼의 최솟값을 구한다.
+4. `sum()` : 인자로 컬럼을 넣어주면 컬럼 전체 합계를 구한다.
+5. `avg()` : 인자로 컬럼을 넣어주면 컬럼의 평균값을 구한다.
+
+- **연습문제**
+  1. `NULL`값은 정해지지 않은 값이니까 빼고 계산 했을 듯
+  2. 혜리의 키는 166.8
+     - 추가 코드 : `UPDATE Person SET Height = 166.8 WHERE Name = '혜리';`
+     - 평균 계산 : `SELECT avg(Height) FROM Person;`
+  3. `pets` 테이블에서 고양이가 몇 마리 인지 세어보라.
+     - `SELECT count(Animal) FROM pets WHERE Animal = "Cat";`
+
+
+
+### 그룹화
+
+- **GROUP BY**
+
+  키를 반올림한 값이 같은 사람 수를 세어보자.
+
+  ```sqlite
+  SELECT round(Height), count(*)
+  FROM Person
+  -- 1은 첫번째 컬럼을 가리킨다.
+  GROUP BY 1;
+  ```
+
+- **HAVING**
+
+  두 명 이상인 경우, 즉 `count(*)`가 `2`이상인 경우만 조회
+
+  ```sqlite
+  SELECT round(Height), count(*)
+  FROM Person
+  GROUP BY round(Height)
+  HAVING count(*) > 1;
+  ```
+
+- **연습문제**
+
+  1. `pets` 테이블에는 동물이 종류별로 몇 마리씩 있는지 세어보라.
+
+     ```sqlite
+     SELECT Animal, count(*)
+     FROM pets
+     GROUP BY 1;
+     ```
+
+  2. `pets` 테이블에서 한 마리가 넘게 있는 동물에는 어떤 것이 있는지 알아보라.
+
+     ```sqlite
+     SELECT Animal, count(*)
+     FROM pets
+     GROUP BY Animal
+     HAVING count(*) > 1;
+     ```
+
+     
+

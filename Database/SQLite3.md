@@ -24,12 +24,14 @@
 - **INSERT**
   1. `INSERT INTO Person(ID, Name, Birthday) VALUES(1, '이혜리', '1994-06-05');`
 - **DELETE**
+  
   1. `DELETE FROM Person;`
-
+  
 - **SELECT**
+  
   1. `SELECT * FROM Person` : table 전체 조회
   2. `SELECT Name FROM Person` : Name 컬럼만 조회
-
+  
 - **ORDER BY**
 
   1. `SELECT Name FROM Person ORDER BY Name;` : Name 컬럼을 조회하되, name을 기준으로 오름차순 정렬
@@ -274,3 +276,167 @@ FROM Birthday;
 
      
 
+### 평균, 편차, 분산, 표준편차
+
+- **평균**
+
+  Person 테이블에서 Height의 개별 값과, 평균 컬럼을 생성하면 평균값을 보여준다.
+
+  ```sqlite
+  SELECT
+  	Name "이름",
+  	Height "키",
+  	-- 집계 함수(avg())로 계산한 결과를 행에 나타내려고 over()구문을 사용
+  	avg(Height) over() "평균"
+  FROM Person;
+  ```
+
+- **편차** - 관측값에서 **평균 또는 중앙값을 뺀** 것이다.
+
+  편차 컬럼을 추가하여 편차를 계산한다.
+
+  ```sqlite
+  SELECT
+  	Name "이름",
+  	Height "키",
+  	avg(Height) over() "평균",
+  	round(Height - avg(Height) over(), 3) "편차"
+  FROM Person;
+  ```
+
+- **편차 합계**
+
+  ```sqlite
+  SELECT sum(편차)
+  -- Person table에서 편차 컬럼만 SELECT
+  FROM (
+  	SELECT
+  		round(Height - avg(Height) over(), 3) "편차"
+      FROM Person
+  )
+  ```
+
+- **분산** - 편차 제곱의 평균
+
+  ```sqlite
+  SELECT avg(편차*편차) "분산"
+  FROM (
+  	SELECT
+  		round(Height - avg(Height) over(), 3) "편차"
+  	FROM Person
+  )
+  ```
+
+
+
+### 조인
+
+- **노래 테이블 생성**
+
+  ```sqlite
+  CREATE TABLE 노래 (
+  	ID INTEGER NOT NULL PRIMARY KEY,
+  	제목 TEXT NOT NULL
+  );
+  ```
+
+- **음반 데이블 생성**
+
+  ```sqlite
+  CREATE TABLE 음반 (
+  	ID INTEGER NOT NULL PRIMARY KEY,
+  	제목 TEXT NOT NULL,
+  	연도 INTEGER
+  );
+  ```
+
+- **수록곡 테이블 생성**(음반과 노래의 관계를 표현)
+
+  ```sqlite
+  CREATE TABLE 수록곡 (
+  	음반ID INTEGER NOT NULL,
+  	노래ID INTEGER NOT NULL
+  );
+  ```
+
+- **각 테이블에 데이터 삽입**
+
+  ```sqlite
+  INSERT INTO 노래 VALUES
+  (1, '갸우뚱'),
+  (2, 'Shuppy Shuppy'),
+  (3, 'Control'),
+  (4, '영러브'),
+  (5, '한번만 안아줘'),
+  (6, '반짝반짝'),
+  (7, '기대해'),
+  (8, 'I Don''t Mind'),
+  (9, 'Easy go'),
+  (10, '여자대통령');
+  
+  INSERT INTO 음반 VALUES
+  (1, 'Girl''s Day Party #1', 2010),
+  (2, 'Everyday', 2011),
+  (3, 'Expectation', 2013),
+  (4, '여자대통령', 2013);
+  
+  INSERT INTO 수록곡 VALUES 
+  (1, 1),
+  (1, 2),
+  (1, 3),
+  (2, 4),
+  (2, 5),
+  (2, 6),  -- Everyday - 반짝반짝
+  (3, 7),
+  (3, 8),
+  (3, 9),
+  (3, 6),  -- Expectation - 반짝반짝
+  (3, 5),
+  (4, 10);
+  ```
+
+- **데이터 조회**
+
+  ```sqlite
+  -- 각 테이블에서 컬럼을 조회해 새로운 컬럼명으로 변경
+  SELECT 음반.제목 앨범명, 음반.연도 발매년도, 노래.제목 곡명
+  FROM 수록곡
+  -- 음반 테이블과 수록곡의 음반ID 컬럼이랑 조인을 음반 테이블의 ID값과
+  INNER JOIN 음반 ON 수록곡.음반ID = 음반.ID
+  INNER JOIN 노래 ON 수록곡.노래ID = 노래.ID
+  
+  
+  -- WHERE절로도 가능
+  SELECT 음반.제목 앨범명, 음반.연도 발매년도, 노래.제목 곡명
+  FROM 노래, 음반, 수록곡
+  -- ID 값이 같은 값끼리 조회
+  WHERE 음반.ID = 수록곡.음반ID AND 노래.ID = 수록곡.노래ID;
+  ```
+
+
+
+### UNION ALL과 UNION
+
+- **UNION ALL**
+
+  서로 다른 테이블의 같은 컬럼을 한꺼번에 조회 가능(컬럼명이 달라도 조회가능)
+
+  ```sqlite
+  SELECT 제목 FROM 음반
+  UNION ALL
+  SELECT 제목 FROM 노래;
+  ```
+
+- **UNION**
+
+  UNION ALL과 비슷하지만 UNION은 **중복값을 제거**
+
+  중복값을 제거할 때 정렬을 수행한다.(메모리 사용)
+
+- RDBMS는 테이블 연산에 최적화 되어 있고 조건절은 부가적인 기능 같다. 그러므로 테이블 간의 조인으로 계산을 할 수 있는 경우에는 조건절 보다 조인으로 처리하는 것이 낫다.
+
+
+
+### 이미지
+
+- **BLOB**(Binary Large Object)

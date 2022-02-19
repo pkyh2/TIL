@@ -508,3 +508,78 @@ Group_Data = STOCK %>%
 
 ## 2021년 버스노선별 정류장별 시간대별 승하차 인원 정보(12월)
 
+- 서울시 버스노선별 정류장별 시간대별 승하차 인원 정보
+  http://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do
+
+```R
+# 패키지 설치
+install.packages("dplyr")
+install.packages("reshape")
+install.packages("plyr")
+install.packages("ggplot2")
+library(dplyr)
+library(reshape)
+library(plyr)
+library(ggplot2)
+
+# 데이터 로드
+BUS = read.csv("C:\\coding\\Python\\R_Programming\\2021년_버스노선별_정류장별_시간대별_승하차_인원_정보(12월).csv")
+
+# 데이터 정보(행, 열)
+dim(BUS)
+
+# 변수 종류
+colnames(BUS)
+
+# head data
+head(BUS)
+
+# 결측치 확인
+colSums(is.na(BUS))
+
+# 총 노선 수 구하기(dplyr)
+BUS_number = BUS %>% distinct(노선번호)
+head(BUS_number)
+nrow(BUS_number)
+
+# 총 정류장 개수 구하기
+BUS_stop = BUS %>% distinct(역명)
+head(BUS_stop)
+nrow(BUS_stop)
+
+# 정류장 중 가장 많은 버스가 지나가는 상위 10개 정류장
+BUS_stop_count = count(BUS, "역명") %>%
+	top_n(10, n) %>%
+	arrange(-n) %>%
+	rename("노선 수" = "n")
+
+BUS_stop_seoul = subset(BUS, 역명 == '서울역버스환승센터')
+count(BUS_stop_seoul, '노선번호') # 조건으로 1개 이상
+
+count = function(x){
+y = subset(BUS, 역명 == x) %>%
+	distinct(노선번호)
+return(nrow(y))
+}
+
+apply(BUS_stop[1],1,count)
+BUS_stop$station_count = apply(BUS_stop[1],1,count)
+
+BUS_stop_top10 = BUS_stop %>%
+     top_n(10, station_count) %>%
+     arrange(-station_count)
+
+# 버스 노선중 가장 많은 정류장을 지나는 상위 10개 버스노선
+
+
+# 시간대별 이용자수 가장 많은 이용자
+# 히스토그램 바차트
+
+# 정류장별 가장 많은 이용자
+
+# 가장 많은 정류장을 지나친 노선
+
+# 
+
+```
+

@@ -185,3 +185,35 @@ Server용 컴퓨터는 일반 컴퓨터보다 고성능을 가지고 유닉스, 
   - 유니캐스트 : 데이터 전달
   - 브로드캐스트 : 정보 수집용
   - 멀티캐스트 : 주로 방송용
+
+### NTP란?(Network Time Protocol)
+
+- NTP는 네트워크로 연결되어 있는 컴퓨터들 끼리 시간을 동기화 시키는데 사용되는 프로토콜이다.
+
+### TCP 3Way-Handshake & 4Way-Handshake
+
+- TCP 3-way Handshake : TCP/IP 프로토콜을 이용해서 통신을 하는 응용프로그램이 데이터를 전송하기 전에 **먼저 정확한 전송을 보장하기 위해 상대방 컴퓨터와 사전에 세션을 수립**하는 과정
+  - Client -> Server : TCP SYN
+  - Server -> Client : TCP SYN+ACK
+  - Client -> Server : TCP ACK
+- TCP 4-way Handshake : 3-way가 세션을 수립할 때 사용한다면, 4-way는 세션을 종료하기 위해 수행되는 절차이다.
+  1. Client가 연결을 종료하겠다는 FIN플래그를 전송한다.
+  2. Server는 일단 확인 메세지를 보내고 자신의 통신이 끝날때까지 기다리는데 이 상태가 **TIME_WAIT** 상태다.
+  3. Server가 통신이 끝났으면 연결이 종료되었다고 Client에게 FIN 플래그를 전송한다.
+  4. Client는 확인 했다는 메세지를 보낸다.
+
+### IPv6 이란?
+
+- IPv6주소는 IPv4주소 부족 문제 해결을 위하여 설계되었다.
+- 기존 IPv4와의 가장 큰 차이점은 IP주소의 길이가 32bit에서 128bit로 확대되었다.![image-20220306154050275](Network.assets/image-20220306154050275.png)
+
+### 듀얼스택 이란?
+
+- 하나의 시스템(호스트 또는 라우터)에서 IPv4와 IPv6 프로토콜을 모두 처리하는 기술
+
+### IPv4 / IPv6 주소 변환 기술
+
+- Network layer : SIIT(Stateless IP/ICMP Translation) - 헤더 변환방식
+- Transport layer : TRT(Transport Relay Translator) - 전송 릴레이 방식
+- Aplication layer : ALG(Application Level Gateway) - 응용 계층 게이트워이 방식 
+- 터널링 : 터널링 기술은 트래픽이 IPv6 망에서 인접한 IPv4 망을 거쳐서 건너편 IPv6 망으로 통신할 때 IPv4 망에 터널을 만들어 IPv6 패킷을 통과시키는 개념

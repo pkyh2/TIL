@@ -71,5 +71,21 @@
 9. `./zkCli.sh -server ip주소` : 여기서 잘 안됨.
 
    - 되는거 같긴한데 계속 `log` 메세지 같은게 뜸.
+   - https://box0830.tistory.com/340 다른 버전으로 다시 설치
 
 10. 카프카 설치(내일 부터!)
+
+    - `tar xvf kafka gz` : kafka 파일 압축풀기
+
+11. 카프카 설정
+    - `/config/server.properties` : 파일에서 `broker.id=0 1 2` 설정, `zookeeper.connect=test-broker01:2181,test-broker02:2181,test-broker03:2181/test` 설정
+
+12. 카프카 시작
+    - `/bin` 경로에서 `kafka-server-start.sh ../config/server.properties` 실행
+    - `failed; error='Cannot allocate memory'` 오류 발생
+      - `kafka-server-start.sh` 파일에서 `export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"` 로 수정
+
+13. 카프카 강의 좀 듣고
+
+14. python kafka 연동 해보기(docker)
+
